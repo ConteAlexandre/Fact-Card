@@ -1,18 +1,38 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Animated, PanResponder } from 'react-native';
 import FactCard from "./component/fact-card";
+
 
 class App extends Component {
 
   constructor(props) {
     super(props);
+    this.state = { panResponder: undefined }
+    this.position = new Animated.ValueXY();
+  }
+
+  componentDidMount() {
+    const panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: (event, gesture) => {
+        console.log(gesture)
+      }
+    })
+    this.setState({panResponder})
   }
 
   render() {
     return (
         <View style={styles.container}>
           <Text style={styles.title}>Fact Swipe!!</Text>
-          <FactCard/>
+          {this.state.panResponder &&
+          <Animated.View
+              {...this.state.panResponder.panHandlers}
+              style={this.position.getLayout()}
+          >
+            <FactCard/>
+          </Animated.View>
+          }
         </View>
     );
   }
