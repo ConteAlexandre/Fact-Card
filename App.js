@@ -14,8 +14,11 @@ class App extends Component {
   componentDidMount() {
     const panResponder = PanResponder.create({
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderMove: (event, gesture) => {
-        console.log(gesture)
+      onPanResponderMove: (event,gesture) => {
+        this.position.setValue({
+          x : gesture.dx,
+          y : 0
+        })
       }
     })
     this.setState({panResponder})
@@ -48,6 +51,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 30
+    fontSize: 30,
+    marginBottom: 15
   }
 });
