@@ -24,6 +24,17 @@ class App extends Component {
     this.setState({panResponder})
   }
 
+  getCardStyles() {
+    const rotation = this.position.x.interpolate({
+      inputRange : [-200,0,200],
+      outputRange: ["-120deg", "0deg", "120deg"]
+    })
+    return {
+      transform: [{rotate : rotation }],
+      ...this.position.getLayout()
+    }
+  }
+
   render() {
     return (
         <View style={styles.container}>
@@ -31,7 +42,7 @@ class App extends Component {
           {this.state.panResponder &&
           <Animated.View
               {...this.state.panResponder.panHandlers}
-              style={this.position.getLayout()}
+              style={this.getCardStyles()}
           >
             <FactCard/>
           </Animated.View>
