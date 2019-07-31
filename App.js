@@ -22,7 +22,9 @@ class App extends Component {
 
     componentDidMount() {
         const panResponder = PanResponder.create({
-            onMoveShouldSetPanResponder: () => true,
+            onMoveShouldSetPanResponder: (e, gesture) => {
+                return Math.abs(gesture.dx) > Math.abs(gesture.dy*3)
+            },
             onPanResponderMove: (event,gesture) => {
                 this.position.setValue({
                     x : gesture.dx,

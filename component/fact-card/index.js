@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import { View, Image, Button, Text, Linking } from "react-native"
+import { View, Image, Button, Text, Linking, ScrollView } from "react-native"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
+
 
 class FactCard extends Component {
 
-    constructor(props) {
-        super(props);
+    gottoTopScrollView = () => {
+        this.scrollView.scrollTo({ x :0, y : 0, animated: true })
     }
-
 
     render() {
         return (
@@ -27,7 +27,13 @@ class FactCard extends Component {
                         uri: this.props.fact.image
                     }}
                 />
-                <Text>{this.props.fact.text}</Text>
+                <ScrollView
+                    ref={scrollViewRef => {this.scrollView = scrollViewRef }}
+                    onScrollEndDrag={this.gottoTopScrollView}
+                    height={hp("10%")}
+                >
+                    <Text style={{ padding : 10 }}>{this.props.fact.text}</Text>
+                </ScrollView>
                 <Button
                     disabled={this.props.disabled}
                     title={"See the source"}
