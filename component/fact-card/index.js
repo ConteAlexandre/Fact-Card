@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Image, Button, Text } from "react-native"
+import { View, Image, Button, Text, Linking } from "react-native"
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 class FactCard extends Component {
@@ -24,11 +24,15 @@ class FactCard extends Component {
                 <Image
                     style={{ width: wp("90%"), height: hp("30%") }}
                     source={{
-                        uri: `https://picsum.photos/200/300?image=12`
+                        uri: this.props.fact.image
                     }}
                 />
-                <Text>khkjshkjfhkdjshfkjdshfkjdshkjdhjkhkhkl</Text>
-                <Button title={"See the source"} onPress={ () => console.log("todo")}/>
+                <Text>{this.props.fact.text}</Text>
+                <Button
+                    disabled={this.props.disabled}
+                    title={"See the source"}
+                    onPress={ () => Linking.openURL(this.props.fact.source_url)}
+                />
             </View>
         );
     }
