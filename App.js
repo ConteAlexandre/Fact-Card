@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Animated, PanResponder } from 'react-native';
 import FactCard from "./component/fact-card";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen";
 
+const CARD_X_ORIGIN = wp("5%");
+const MAX_LEFT_ROTATION_DISTANCE = wp("-150%")
+const MAX_RIGHT_ROTATION_DISTANCE = wp("150%")
+const LEFT_TRESHOLD_BEFORE_SWIPE = wp("-50%");
+const RIGHT_TRESHOLD_BEFORE_SWIPE = wp("50%");
 
 class App extends Component {
 
@@ -19,14 +25,41 @@ class App extends Component {
           x : gesture.dx,
           y : 0
         })
+      },
+      onPanResponderRelease: (event, gesture) => {
+          if (gesture.dx < LEFT_TRESHOLD_BEFORE_SWIPE) {
+              this.forceLeftEXit();
+          }else if (gesture.dx > RIGHT_TRESHOLD_BEFORE_SWIPE) {
+              this.forceRightExit();
+          }else {
+              this.resetPositionSoft();
+          }
       }
     })
     this.setState({panResponder})
   }
 
+  forceLeftEXit() {
+      Animated.timing(this.position, {
+          toValue: { x : wp("-100%"), y : 0 }
+      }).start()
+  }
+
+  forceRightExit() {
+      Animated.timing(this.position, {
+          toValue: { x : wp("100%"), y : 0 }
+      }).start()
+  }
+
+  resetPositionSoft() {
+      Animated.spring(this.position, {
+          toValue: { x :0, y : 0 }
+      }).start()
+  }
+
   getCardStyles() {
     const rotation = this.position.x.interpolate({
-      inputRange : [-200,0,200],
+      inputRange : [MAX_LEFT_ROTATION_DISTANCE, 0, MAX_RIGHT_ROTATION_DISTANCE],
       outputRange: ["-120deg", "0deg", "120deg"]
     })
     return {
