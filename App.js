@@ -67,11 +67,13 @@ class App extends Component {
         return `${RANDOM_IMAGE_URL}${Math.floor(Math.random()*500+1)}`
     }
 
-    onCardExitDown() {
-        this.setState({topFact: this.state.bottomFact})
+    onCardExitDown =() => {
+        this.setState({
+            topFact: this.state.bottomFact
+        })
         this.loadBottomFact();
         this.position.setValue({
-            x : 0
+            x : 0,
             y : 0
         })
     }
@@ -79,13 +81,13 @@ class App extends Component {
     forceLeftEXit() {
         Animated.timing(this.position, {
             toValue: { x : wp("-100%"), y : 0 }
-        }).start()
+        }).start(this.onCardExitDown)
     }
 
     forceRightExit() {
         Animated.timing(this.position, {
             toValue: { x : wp("100%"), y : 0 }
-        }).start()
+        }).start(this.onCardExitDown)
     }
 
     resetPositionSoft() {
